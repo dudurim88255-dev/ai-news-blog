@@ -3,7 +3,7 @@ import { PostMeta } from './posts';
 
 export const SITE_NAME = 'SIGNAL // AI';
 export const SITE_TAGLINE = '오늘의 AI 뉴스, 내일의 미래 예측';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://signal-ai.vercel.app';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ainews-kr.vercel.app';
 export const SITE_DESCRIPTION = 'AI·로보틱스·양자컴퓨팅 최신 뉴스를 한국어로 분석합니다. 지금 일어나는 일이 1년·5년·10년 뒤 세상을 어떻게 바꾸는지 미래 예측까지.';
 
 export function buildOgImageUrl(post: PostMeta): string {
