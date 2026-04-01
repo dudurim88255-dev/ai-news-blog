@@ -1,31 +1,40 @@
 import Link from 'next/link';
-import { SITE_NAME } from '@/lib/seo';
 
 export function Footer() {
   return (
-    <footer style={{ borderTop: '1px solid #1a1a1a', background: '#000', marginTop: '4rem', padding: '2.5rem 0' }}>
-      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between gap-6" style={{ color: '#444', fontSize: '0.8rem' }}>
-        <div>
-          <span style={{ fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, color: '#ff6b35' }}>SIGNAL//AI</span>
-          <p style={{ marginTop: 6, color: '#333', fontSize: '0.75rem' }}>오늘의 AI 뉴스, 내일의 미래 예측</p>
-        </div>
-        <div style={{ display: 'flex', gap: 32 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ color: '#333', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Topics</span>
-            <Link href="/category/ai-ml" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">AI·머신러닝</Link>
-            <Link href="/category/robotics" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">로보틱스</Link>
-            <Link href="/category/future" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">미래예측</Link>
+    <footer style={{
+      borderTop: '1px solid rgba(139,92,246,0.15)',
+      background: 'rgba(7,13,31,0.95)',
+      marginTop: '4rem',
+      padding: '2rem 0',
+    }}>
+      <div className="max-w-7xl mx-auto px-4">
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 }}>
+          {/* 링크 */}
+          <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap' }}>
+            {[
+              { href: '/about', label: '소개' },
+              { href: '/contact', label: '제휴 문의' },
+              { href: '/privacy', label: '개인정보처리방침' },
+            ].map(({ href, label }) => (
+              <Link key={href} href={href}
+                style={{ fontSize: '0.8rem', color: '#4a5880' }}
+                className="hover:text-[#a78bfa] transition-colors">
+                {label}
+              </Link>
+            ))}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ color: '#333', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Site</span>
-            <Link href="/about" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">소개</Link>
-            <Link href="/privacy" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">개인정보</Link>
-            <Link href="/contact" style={{ color: '#444' }} className="hover:text-[#ff6b35] transition-colors">연락처</Link>
+
+          {/* Powered by */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.75rem', color: '#2d3a5a' }}>
+            Powered by
+            <span style={{ color: '#4a5880', fontWeight: 700 }}>▲ Vercel</span>
           </div>
         </div>
-      </div>
-      <div className="max-w-6xl mx-auto px-4 mt-6" style={{ color: '#2a2a2a', fontSize: '0.7rem', fontFamily: 'monospace' }}>
-        © {new Date().getFullYear()} {SITE_NAME}
+
+        <div style={{ marginTop: '1rem', fontSize: '0.72rem', color: '#2d3a5a' }}>
+          © {new Date().getFullYear()} AI News KR. All rights reserved.
+        </div>
       </div>
     </footer>
   );

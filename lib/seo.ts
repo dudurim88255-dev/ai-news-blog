@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import { PostMeta } from './posts';
 
-export const SITE_NAME = 'SIGNAL // AI';
-export const SITE_TAGLINE = '오늘의 AI 뉴스, 내일의 미래 예측';
+export const SITE_NAME = 'AI News KR';
+export const SITE_TAGLINE = '대한민국 AI의 미래를 잇다';
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ainews-kr.vercel.app';
-export const SITE_DESCRIPTION = 'AI·로보틱스·양자컴퓨팅 최신 뉴스를 한국어로 분석합니다. 지금 일어나는 일이 1년·5년·10년 뒤 세상을 어떻게 바꾸는지 미래 예측까지.';
+export const SITE_DESCRIPTION = 'AI·로보틱스·양자컴퓨팅 최신 뉴스를 한국어로. 지금 일어나는 일이 1년·5년·10년 뒤 세상을 어떻게 바꾸는지 미래 예측까지.';
 
 export function buildOgImageUrl(post: PostMeta): string {
   const params = new URLSearchParams({ title: post.title, category: post.category });
@@ -49,16 +49,8 @@ export function buildArticleJsonLd(post: PostMeta) {
     headline: post.title,
     description: post.summary,
     image,
-    author: {
-      '@type': 'Person',
-      name: SITE_NAME,
-      url: `${SITE_URL}/about`,
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
-    },
+    author: { '@type': 'Person', name: SITE_NAME, url: `${SITE_URL}/about` },
+    publisher: { '@type': 'Organization', name: SITE_NAME, logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` } },
     datePublished: post.date,
     dateModified: post.updatedAt ?? post.date,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
