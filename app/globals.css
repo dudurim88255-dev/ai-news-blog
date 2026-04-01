@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+/* ── 디자인 토큰 ── */
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #111111;
+  --bg-card2: #161616;
+  --text: #f0f0f0;
+  --text-muted: #777;
+  --accent: #ff6b35;      /* 오렌지 */
+  --accent2: #ff2d78;     /* 핫핑크 */
+  --accent3: #00ff88;     /* 네온그린 */
+  --border: #222;
+  --border-bright: #333;
+}
+
+/* ── 베이스 ── */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  line-height: 1.8;
+}
+
+/* 스캔라인 텍스처 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 107, 53, 0.015) 2px,
+    rgba(255, 107, 53, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 우측 하단 글로우 */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -300px;
+  right: -200px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(ellipse, rgba(255, 45, 120, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── 스크롤바 ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #000; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* ── 애니메이션 ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── 포스트 본문 ── */
+.prose {
+  color: var(--text);
+  max-width: 720px;
+}
+.prose h2 {
+  color: var(--accent);
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-left: 3px solid var(--accent);
+  padding-left: 0.75em;
+}
+.prose h3 { color: #ddd; margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.1rem; font-weight: 700; }
+.prose p { margin-bottom: 1.2em; color: #ccc; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose a:hover { color: #ff8c5a; }
+.prose ul, .prose ol { padding-left: 1.5em; margin-bottom: 1.2em; }
+.prose li { margin-bottom: 0.4em; color: #bbb; }
+.prose code { background: #1a1a1a; padding: 2px 6px; border-radius: 3px; font-size: 0.875em; font-family: 'JetBrains Mono', 'Fira Code', monospace; color: var(--accent3); border: 1px solid #2a2a2a; }
+.prose pre { background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 6px; padding: 1rem; overflow-x: auto; margin-bottom: 1.5em; }
+.prose pre code { background: none; padding: 0; border: none; }
+.prose blockquote { border-left: 3px solid var(--accent2); padding-left: 1.2em; color: #888; font-style: italic; margin: 1.5em 0; }
+.prose strong { color: #fff; font-weight: 700; }
+.prose hr { border-color: #222; margin: 2em 0; }
+.prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5em; font-size: 0.9rem; }
+.prose th { background: #161616; color: var(--accent); padding: 8px 12px; text-align: left; border: 1px solid #222; font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; }
+.prose td { padding: 8px 12px; border: 1px solid #222; color: #999; }
+.prose tr:hover td { background: rgba(255, 107, 53, 0.04); }
+
+/* ── 하이라이트 박스 ── */
+.highlight-box {
+  background: #111;
+  border: 1px solid var(--accent);
+  border-left: 4px solid var(--accent);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  color: #ddd;
+}
+
+/* ── 출처 박스 ── */
+.cite-box {
+  background: #0f0f0f;
+  border: 1px solid #222;
+  border-left: 3px solid var(--accent2);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* ── 카드 ── */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.glass-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ── 네온 버튼 ── */
+.btn-neon {
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 8px 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-neon:hover {
+  background: var(--accent);
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+}
+
+/* ── 카테고리 배지 ── */
+.cat-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border-radius: 2px;
+}
