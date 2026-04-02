@@ -1,18 +1,18 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getAllPosts } from '@/lib/posts';
 import { CATEGORY_MAP } from '@/lib/categories';
 import { PostCard } from '@/components/PostCard';
-import { CategoryThumbnail } from '@/components/CategoryThumbnail';
 import { AdBanner } from '@/components/AdBanner';
 
-const HOT_KEYWORDS = [
-  { icon: '🤖', label: 'LLM' },
-  { icon: '🦾', label: 'Robotics' },
-  { icon: '⚖️', label: 'Ethical AI' },
-  { icon: '🌐', label: 'Metaverse' },
-  { icon: '⚛️', label: 'Quantum' },
-  { icon: '🔮', label: 'AGI' },
-];
+const CATEGORY_IMAGE: Record<string, string> = {
+  'ai-ml':   '/images/categories/ai-ml.png',
+  robotics:  '/images/categories/robotics.png',
+  future:    '/images/categories/future.png',
+  society:   '/images/categories/society.png',
+  science:   '/images/categories/science.png',
+  tools:     '/images/categories/tools.png',
+};
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -90,15 +90,15 @@ export default function HomePage() {
           {/* 우측 사이드바 */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-            {/* 금주의 핫 키워드 */}
+            {/* 금주의 핫 키워드 — 실제 태그에서 추출 */}
             <div className="side-box">
               <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#e8f0ff', marginBottom: '0.9rem', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span style={{ color: '#f59e0b' }}>🔥</span> 금주의 핫 키워드
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {HOT_KEYWORDS.map(({ icon, label }) => (
-                  <Link key={label} href={`/tag/${encodeURIComponent(label)}`} className="keyword-pill">
-                    <span>{icon}</span> {label}
+                {topTags.slice(0, 8).map(([tag]) => (
+                  <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`} className="keyword-pill">
+                    {tag}
                   </Link>
                 ))}
               </div>
@@ -109,16 +109,22 @@ export default function HomePage() {
               <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#e8f0ff', marginBottom: '0.9rem', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span>📈</span> 인기 뉴스
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {popularPosts.map((post) => (
                   <Link key={post.slug} href={`/blog/${post.slug}`}
-                    style={{ display: 'flex', gap: 10, alignItems: 'flex-start', padding: '8px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}
+                    style={{ display: 'flex', gap: 10, alignItems: 'center', padding: '8px 0', borderBottom: '1px solid rgba(139,92,246,0.08)' }}
                     className="group">
-                    {/* 썸네일 */}
-                    <div style={{ width: 56, height: 48, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#0a1128' }}>
-                      <CategoryThumbnail category={post.category} />
+                    {/* 실사 이미지 썸네일 */}
+                    <div style={{ width: 60, height: 50, borderRadius: 8, flexShrink: 0, overflow: 'hidden', position: 'relative', background: '#0a1128' }}>
+                      <Image
+                        src={post.coverImage || CATEGORY_IMAGE[post.category] || '/images/categories/ai-ml.png'}
+                        alt={post.title}
+                        fill
+                        sizes="60px"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </div>
-                    <p style={{ fontSize: '0.78rem', color: '#8b9cc8', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
+                    <p style={{ fontSize: '0.77rem', color: '#8b9cc8', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
                       className="group-hover:text-white transition-colors">
                       {post.title}
                     </p>
