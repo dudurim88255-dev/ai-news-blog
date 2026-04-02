@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getAllPosts } from '@/lib/posts';
 import { CATEGORY_MAP } from '@/lib/categories';
 import { PostCard } from '@/components/PostCard';
+import { CategoryThumbnail } from '@/components/CategoryThumbnail';
 import { AdBanner } from '@/components/AdBanner';
 
 const HOT_KEYWORDS = [
@@ -114,13 +115,8 @@ export default function HomePage() {
                     style={{ display: 'flex', gap: 10, alignItems: 'flex-start', padding: '8px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}
                     className="group">
                     {/* 썸네일 */}
-                    <div style={{
-                      width: 56, height: 48, borderRadius: 8, flexShrink: 0, overflow: 'hidden',
-                      background: 'linear-gradient(135deg, #1e1b4b, #312e81)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '1.2rem',
-                    }}>
-                      {post.category === 'ai-ml' ? '🤖' : post.category === 'robotics' ? '🦾' : post.category === 'future' ? '🔮' : '📡'}
+                    <div style={{ width: 56, height: 48, borderRadius: 8, flexShrink: 0, overflow: 'hidden', background: '#0a1128' }}>
+                      <CategoryThumbnail category={post.category} />
                     </div>
                     <p style={{ fontSize: '0.78rem', color: '#8b9cc8', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}
                       className="group-hover:text-white transition-colors">
