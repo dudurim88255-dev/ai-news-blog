@@ -14,12 +14,12 @@ export interface PostMeta {
   category: string;
   tags: string[];
   summary: string;
-  paperDOI?: string;
-  journal?: string;
-  difficulty: '입문' | '중급' | '심화';
+  sourceUrl?: string;
+  sourceName?: string;
   coverImage?: string;
   readingTime: string;
   updatedAt?: string;
+  journal?: string;
 }
 
 export interface Post extends PostMeta {
@@ -41,9 +41,8 @@ export function getAllPosts(): PostMeta[] {
       category: data.category ?? '',
       tags: data.tags ?? [],
       summary: data.summary ?? '',
-      paperDOI: data.paperDOI,
-      journal: data.journal,
-      difficulty: data.difficulty ?? '입문',
+      sourceUrl: data.sourceUrl,
+      sourceName: data.sourceName,
       coverImage: data.coverImage,
       readingTime: readingTime(content).text,
       updatedAt: data.updatedAt,
@@ -64,9 +63,8 @@ export function getPostBySlug(slug: string): Post | null {
     category: data.category ?? '',
     tags: data.tags ?? [],
     summary: data.summary ?? '',
-    paperDOI: data.paperDOI,
-    journal: data.journal,
-    difficulty: data.difficulty ?? '입문',
+    sourceUrl: data.sourceUrl,
+    sourceName: data.sourceName,
     coverImage: data.coverImage,
     readingTime: readingTime(content).text,
     updatedAt: data.updatedAt,
