@@ -1,10 +1,10 @@
 ---
-title: "Stop Wandering: Efficient Vision-Language Navigation via Metacognitive Reasoning"
+title: "AI 에이전트가 길을 잃지 않게 — 메타인지 추론으로 3D 탐색 효율을 높인 MetaNav"
 slug: "2026-04-05-stop-wandering-efficient-vision-language-navigation-via-meta"
 date: "2026-04-05"
 category: "society"
-tags: []
-summary: ""
+tags: ["비전-언어 내비게이션", "메타인지", "AI 에이전트", "3D 탐색", "arXiv"]
+summary: "파운데이션 모델 기반 AI 탐색 에이전트의 비효율적인 반복 탐색 문제를 메타인지 추론으로 해결한 MetaNav 연구입니다. VLM 쿼리를 20.7% 줄이면서 최고 수준의 성능을 달성했습니다."
 arxivId: "2604.02318v1"
 paperDOI: ""
 journal: "arXiv"
@@ -14,8 +14,17 @@ coverImage: ""
 
 ## 핵심 내용
 
-Training-free Vision-Language Navigation (VLN) agents powered by foundation models can follow instructions and explore 3D environments. However, existing approaches rely on greedy frontier selection and passive spatial memory, leading to inefficient behaviors such as local oscillation and redundant revisiting. We argue that this stems from a lack of metacognitive capabilities: the agent cannot monitor its exploration progress, diagnose strategy failures, or adapt accordingly. To address this, we propose MetaNav, a metacognitive navigation agent integrating spatial memory, history-aware planning, and reflective correction. Spatial memory builds a persistent 3D semantic map. History-aware planning penalizes revisiting to improve efficiency. Reflective correction detects stagnation and uses an LLM to generate corrective rules that guide future frontier selection. Experiments on GOAT-Bench, HM3D-OVON, and A-EQA show that MetaNav achieves state-of-the-art performance while reducing VLM queries by 20.7%, demonstrating that metacognitive reasoning significantly improves robustness and efficiency.
+파운데이션 모델 기반의 **비전-언어 내비게이션(VLN)** 에이전트는 지시를 따르며 3D 환경을 탐색할 수 있습니다. 그러나 기존 접근법은 탐욕적 프론티어 선택(greedy frontier selection)과 수동적 공간 기억에 의존해 같은 장소를 반복 방문하거나 제자리를 맴도는 비효율적인 행동을 보입니다.
 
+연구진은 이 문제의 근본 원인이 **메타인지 능력 부재**에 있다고 주장합니다. 에이전트가 탐색 진행 상황을 스스로 점검하고, 전략 실패를 진단하고, 그에 맞게 적응하지 못한다는 것입니다.
+
+이를 해결하기 위해 **MetaNav**를 제안했습니다. 세 가지 모듈을 통합한 메타인지 내비게이션 에이전트입니다.
+
+- **공간 기억(Spatial Memory)**: 지속적인 3D 의미 지도를 구축합니다.
+- **이력 기반 계획(History-aware Planning)**: 이미 방문한 장소를 재방문하면 페널티를 부과해 효율성을 높입니다.
+- **반성적 교정(Reflective Correction)**: 정체 상태를 감지하면 LLM을 통해 교정 규칙을 생성하고 이후 탐색 방향을 가이드합니다.
+
+GOAT-Bench, HM3D-OVON, A-EQA 벤치마크 실험에서 MetaNav는 최고 수준의 성능을 달성하면서 VLM 쿼리를 **20.7% 줄이는** 데 성공했습니다. 메타인지 추론이 AI 에이전트의 견고성과 효율성을 크게 향상시킨다는 것을 보여줍니다.
 
 ---
 

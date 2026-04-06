@@ -1,10 +1,10 @@
 ---
-title: "CoME-VL: Scaling Complementary Multi-Encoder Vision-Language Learning"
+title: "CoME-VL: 두 가지 비전 인코더를 합쳐서 이미지-언어 모델 성능을 끌어올리다"
 slug: "2026-04-06-come-vl-scaling-complementary-multi-encoder-vision-language-"
 date: "2026-04-06"
 category: "ai-ml"
-tags: []
-summary: ""
+tags: ["비전-언어 모델", "멀티인코더", "CLIP", "DINO", "arXiv"]
+summary: "CLIP과 DINO 두 비전 인코더를 융합한 CoME-VL이 단일 인코더 대비 시각 이해 작업에서 평균 4.9%, 객체 위치 파악(grounding)에서 5.4% 향상을 달성했습니다."
 arxivId: "2604.03231v1"
 paperDOI: ""
 journal: "arXiv"
@@ -14,8 +14,18 @@ coverImage: ""
 
 ## 핵심 내용
 
-Recent vision-language models (VLMs) typically rely on a single vision encoder trained with contrastive image-text objectives, such as CLIP-style pretraining. While contrastive encoders are effective for cross-modal alignment and retrieval, self-supervised visual encoders often capture richer dense semantics and exhibit stronger robustness on recognition and understanding tasks. In this work, we investigate how to scale the fusion of these complementary visual representations for vision-language modeling. We propose CoME-VL: Complementary Multi-Encoder Vision-Language, a modular fusion framework that integrates a contrastively trained vision encoder with a self-supervised DINO encoder. Our approach performs representation-level fusion by (i) entropy-guided multi-layer aggregation with orthogonality-constrained projections to reduce redundancy, and (ii) RoPE-enhanced cross-attention to align heterogeneous token grids and produce compact fused visual tokens. The fused tokens can be injected into a decoder-only LLM with minimal changes to standard VLM pipelines. Extensive experiments across diverse vision-language benchmarks demonstrate that CoME-VL consistently outperforms single-encoder baselines. In particular, we observe an average improvement of 4.9% on visual understanding tasks and 5.4% on grounding tasks. Our method achieves state-of-the-art performance on RefCOCO for detection while improving over the baseline by a large margin. Finally, we conduct ablation studies on layer merging, non-redundant feature mixing, and fusion capacity to evaluate how complementary contrastive and self-supervised signals affect VLM performance.
+최근 비전-언어 모델(VLM)은 대부분 CLIP처럼 이미지와 텍스트를 대조 학습(contrastive learning)한 단일 비전 인코더에 의존합니다. 대조 학습 인코더는 이미지-텍스트 정렬과 검색에 강하지만, 자기지도 학습(self-supervised) 인코더는 더 풍부한 밀도 정보(dense semantics)를 포착하고 인식·이해 작업에서 더 강한 견고성을 보입니다.
 
+이 연구는 두 종류의 시각 표현을 함께 사용할 때 어떻게 효과적으로 융합할 수 있는지를 탐구합니다. 연구진은 **CoME-VL(Complementary Multi-Encoder Vision-Language)**을 제안했습니다. 대조 학습 인코더(CLIP)와 자기지도 학습 인코더(DINO)를 모듈 방식으로 결합하는 프레임워크입니다.
+
+융합 방식은 두 가지입니다.
+
+- **엔트로피 기반 다층 집계**: 직교 제약 투영(orthogonality-constrained projection)으로 중복을 줄이면서 여러 레이어의 특징을 합칩니다.
+- **RoPE 강화 교차 어텐션**: 서로 다른 토큰 그리드를 정렬해 작고 효율적인 융합 시각 토큰을 생성합니다.
+
+융합된 토큰은 기존 VLM 파이프라인에서 디코더 전용 LLM에 최소한의 변경만으로 주입할 수 있습니다.
+
+다양한 비전-언어 벤치마크 실험에서 CoME-VL은 단일 인코더 기반 모델을 일관되게 능가했습니다. 시각 이해 작업에서 평균 **4.9%**, 객체 위치 파악(grounding) 작업에서 **5.4%** 향상을 기록했습니다. 객체 탐지 벤치마크인 RefCOCO에서도 최고 수준의 성능을 달성했습니다.
 
 ---
 
