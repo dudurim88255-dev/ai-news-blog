@@ -9,7 +9,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const MAX_POSTS_PER_RUN = 2;
+const MAX_POSTS_PER_RUN = 1; // 1회 실행당 최고 포스트 1개 (하루 2회 실행 = 일 2개)
 
 // ── RSS 소스 설정 ─────────────────────────────────────────────────────────────
 
@@ -113,6 +113,32 @@ function decodeHtml(str: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#039;/g, "'")
     .replace(/&nbsp;/g, ' ');
+}
+
+// ── 최고 후보 선택 ────────────────────────────────────────────────────────────
+
+async function pickBestItem(items: RssItem[]): Promise<RssItem> {
+  if (items.length === 1) return items[0];
+
+  const list = items.slice(0, 10).map((item, i) =>
+    `${i + 1}. [${item.source}] ${item.title}\n   ${item.description.slice(0, 120)}`
+  ).join('\n\n');
+
+  const result = await callClaude(
+    '숫자만 답하세요. 설명 없이.',
+    `다음 AI 뉴스/도구 목록 중 한국 독자에게 가장 유용하고 흥미로운 항목 하나의 번호를 선택하세요.
+선택 기준: 실용성, 최신성, 한국 사용자 관련성, 독자 흥미도.
+
+${list}
+
+답: 번호만 (예: 3)`,
+    10,
+  );
+
+  const idx = parseInt(result?.trim() ?? '1', 10) - 1;
+  const selected = items[Math.max(0, Math.min(idx, items.length - 1))];
+  console.log(`🏆 최고 후보 선택: [${idx + 1}] ${selected.title}`);
+  return selected;
 }
 
 // ── 글 유형 결정 ──────────────────────────────────────────────────────────────
@@ -394,7 +420,7 @@ async function main() {
         existingTitles.add(key);
       }
     }
-    if (allItems.length >= MAX_POSTS_PER_RUN * 4) break;
+    if (allItems.length >= 20) break; // 20개 후보에서 최고 1개 선택
   }
 
   if (allItems.length === 0) {
@@ -402,19 +428,20 @@ async function main() {
     return;
   }
 
-  console.log(`📄 후보 ${allItems.length}개 → 상위 ${MAX_POSTS_PER_RUN}개 처리\n`);
+  console.log(`📄 후보 ${allItems.length}개 → Claude가 최고 1개 선택\n`);
+
+  // Claude가 후보 중 가장 좋은 1개를 선택
+  const bestItem = await pickBestItem(allItems);
+  const postType = decidePostType(bestItem);
+  console.log(`⚙️  [${postType}] ${bestItem.title}`);
 
   const results: string[] = [];
-  for (const item of allItems.slice(0, MAX_POSTS_PER_RUN)) {
-    const postType = decidePostType(item);
-    console.log(`⚙️  [${postType}] ${item.title}`);
-    try {
-      const slug = await savePost(item, postType);
-      results.push(slug);
-      console.log(`✅ 생성: ${slug}`);
-    } catch (e: any) {
-      console.warn(`⚠️  실패: ${e.message}`);
-    }
+  try {
+    const slug = await savePost(bestItem, postType);
+    results.push(slug);
+    console.log(`✅ 생성: ${slug}`);
+  } catch (e: any) {
+    console.warn(`⚠️  실패: ${e.message}`);
   }
 
   console.log(`\n🎉 완료: ${results.length}개\n${results.join('\n')}`);
