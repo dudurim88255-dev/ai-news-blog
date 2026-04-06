@@ -20,14 +20,14 @@ export default function BlogIndexPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       {/* 헤더 */}
-      <div className="mb-10" style={{ borderBottom: '1px solid #1a1a1a', paddingBottom: '2rem' }}>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#444', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>
+      <div className="mb-10" style={{ borderBottom: '1px solid rgba(139,92,246,0.2)', paddingBottom: '2rem' }}>
+        <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#4a5880', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>
           // ALL ARTICLES
         </div>
-        <h1 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#f0f0f0', letterSpacing: '-0.03em', marginBottom: '0.5rem' }}>
+        <h1 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#f0f4ff', letterSpacing: '-0.03em', marginBottom: '0.5rem' }}>
           전체 뉴스
         </h1>
-        <p style={{ color: '#444', fontSize: '0.85rem', fontFamily: 'monospace' }}>
+        <p style={{ color: '#4a5880', fontSize: '0.85rem', fontFamily: 'monospace' }}>
           {posts.length} ARTICLES INDEXED
         </p>
       </div>
@@ -36,7 +36,7 @@ export default function BlogIndexPage() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: '2.5rem' }}>
         <Link
           href="/blog"
-          style={{ border: '1px solid #ff6b35', color: '#ff6b35', padding: '5px 14px', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}
+          style={{ border: '1px solid #8b5cf6', color: '#a78bfa', padding: '5px 14px', fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', borderRadius: 6 }}
         >
           ALL ({posts.length})
         </Link>
@@ -47,8 +47,8 @@ export default function BlogIndexPage() {
             <Link
               key={slug}
               href={`/category/${slug}`}
-              style={{ border: '1px solid #222', color: '#555', padding: '5px 14px', fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', transition: 'all 0.2s' }}
-              className="hover:border-[#ff6b35] hover:text-[#ff6b35]"
+              style={{ border: '1px solid rgba(139,92,246,0.25)', color: '#8b9cc8', padding: '5px 14px', fontSize: '0.72rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', transition: 'all 0.2s', borderRadius: 6 }}
+              className="hover:border-[#8b5cf6] hover:text-[#a78bfa]"
             >
               {name} ({count})
             </Link>
@@ -57,7 +57,7 @@ export default function BlogIndexPage() {
       </div>
 
       {/* 포스트 그리드 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: '#1a1a1a' }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {posts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}

@@ -37,3 +37,112 @@
 - API 키를 클라이언트 컴포넌트에 넣지 않을 것
 - `getServerSideProps` / `getStaticProps` 금지 (App Router 방식 사용)
 - fetch에 캐시 설정 없이 사용 금지 (revalidate 명시)
+
+## 🔄 Stuck Detection & Reset Protocol
+
+When struggling with a feature (3+ failed attempts, growing complexity,
+or cascading fixes), STOP and ask yourself:
+
+> "Knowing what we know now, if we were to start reimplementing this
+> feature from scratch, how would we do things differently, particularly
+> with an eye for refactoring to reduce code complexity and fragmentation.
+> What should we have done prior to even starting this feature?"
+
+### Process:
+1. **Detect** — 같은 에러 3회 반복, 파일 5개 이상 동시 수정, 또는 fix-on-fix 패턴 발생 시
+2. **Stop** — 현재 접근 방식을 즉시 중단
+3. **Reflect** — 위 질문에 답변을 작성 (root cause, 잘못된 가정, 누락된 설계)
+4. **Plan** — 새로운 설계를 먼저 문서화 (코드 작성 전)
+5. **Reset** — 변경사항 revert 후 새 설계 기반으로 처음부터 재구현
+
+## ⚡ Token Optimization (from ECC)
+
+### 기본 설정
+- 일반 작업: sonnet 모델 사용 (비용 60% 절감)
+- 복잡한 아키텍처/디버깅: opus로 전환
+- MAX_THINKING_TOKENS: 10000 (기본 31999 대비 70% 절감)
+- AUTOCOMPACT: 50% (기본 95% 대비 조기 컴팩션으로 품질 유지)
+
+### Strategic Compact 규칙
+- /compact 타이밍: 리서치 완료 후 → 구현 전, 마일스톤 완료 후 → 다음 작업 전, 디버깅 후 → 기능 작업 전, 실패한 접근 폐기 후 → 새 접근 전
+- /compact 금지: 구현 중간 (변수명, 파일 경로, 부분 상태 유실됨)
+- /clear: 무관한 작업 간 전환 시 (무료, 즉시 리셋)
+- /cost: 세션 중 토큰 소비 모니터링
+
+## 📝 Coding Style Rules (from ECC)
+
+### 불변성 우선
+- const 기본 사용, let은 반드시 필요할 때만
+- 객체/배열 변경 대신 스프레드 연산자 사용
+- 함수는 순수 함수(pure function) 우선
+
+### 파일 구조
+- 한 파일 = 한 책임 (300줄 초과 시 분리)
+- 명확한 네이밍: 파일명은 내용을 설명 (utils.ts ❌ → formatDate.ts ✅)
+- 관련 코드는 같은 디렉토리에 배치
+
+### 주석 원칙
+- WHY를 설명, WHAT은 설명하지 않음
+- ✅ "API 과부하 방지를 위한 지수 백오프 적용"
+- ❌ "카운터를 1 증가"
+
+### 에러 핸들링
+- 에러를 삼키지 않음 (빈 catch 블록 금지)
+- 사용자에게 보여줄 에러와 로깅할 에러를 구분
+- 에러 메시지에 컨텍스트 포함 (무엇이, 왜, 어떻게 해결)
+
+## 🔀 Git Workflow Rules (from ECC)
+
+### 커밋 메시지 형식
+`
+<type>(<scope>): <description>
+
+type: feat, fix, docs, style, refactor, test, chore
+scope: 선택적, 영향 범위
+description: 현재형, 소문자 시작, 마침표 없음
+`
+
+### 예시
+- eat(auth): add Google OAuth login
+- ix(api): handle null response from external service
+- efactor(blog): extract post generation into separate module
+
+### PR 규칙
+- 한 PR = 한 기능/수정
+- 자체 코드 리뷰 후 머지
+- 빌드 깨지는 코드 머지 금지
+
+## 🔒 Security Rules (from ECC)
+
+### 절대 금지
+- 하드코딩된 시크릿/API 키/비밀번호 (.env 사용)
+- .env 파일 커밋 (.gitignore 필수)
+- 사용자 입력 무검증 사용
+
+### 필수 체크
+- 환경변수로 시크릿 관리
+- API 키 노출 시 즉시 revoke & rotate
+- 의존성 보안 취약점 확인 (
+pm audit)
+
+## 🧪 Testing Rules (from ECC)
+
+### TDD 우선
+1. 실패하는 테스트 작성 (RED)
+2. 최소한의 코드로 통과 (GREEN)
+3. 리팩토링 (REFACTOR)
+
+### 테스트 원칙
+- 새 기능 = 테스트 필수
+- 버그 수정 = 재현 테스트 먼저
+- 외부 의존성은 모킹
+- 테스트는 독립적 (순서 무관하게 실행 가능)
+
+## 🔄 Research-First Development (from ECC)
+
+코딩 전에 항상 리서치:
+1. **Search** — 기존 솔루션/라이브러리/패턴 검색
+2. **Read** — 관련 문서/API 레퍼런스 읽기
+3. **Plan** — 설계 먼저 (CLAUDE.md나 주석으로 계획 작성)
+4. **Code** — 그 다음 코딩
+5. **Verify** — 빌드, 테스트, 린트 확인

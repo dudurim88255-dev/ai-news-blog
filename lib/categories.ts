@@ -1,8 +1,8 @@
 export const CATEGORY_MAP: Record<string, { name: string; description: string }> = {
-  'ai-ml': { name: 'AI·머신러닝', description: 'LLM, 멀티모달, 파운데이션 모델' },
-  robotics: { name: '로보틱스', description: '휴머노이드, 자율주행, 드론' },
-  future: { name: '미래예측', description: '기술 트렌드, 1·5·10년 예측' },
-  society: { name: '사회·경제', description: 'AI의 일자리·산업·정책 영향' },
-  science: { name: '과학·연구', description: '딥테크, 양자컴퓨팅, 바이오AI' },
-  tools: { name: '툴·서비스', description: '신규 AI 툴, 플랫폼, 스타트업' },
+  'review':      { name: '도구 리뷰',   description: '실제 써본 AI 도구 솔직 리뷰' },
+  'comparison':  { name: 'VS 비교',     description: '비슷한 AI 도구 나란히 비교' },
+  'guide':       { name: '사용법·팁',   description: '초보도 따라할 수 있는 활용 가이드' },
+  'pricing':     { name: '가격 분석',   description: '무료 vs 유료, 구독 가치 분석' },
+  'news':        { name: 'AI 뉴스',     description: '이번 주 AI 업계 핫이슈' },
+  'roundup':     { name: '도구 모음',   description: '용도별 추천 AI 도구 큐레이션' },
 };

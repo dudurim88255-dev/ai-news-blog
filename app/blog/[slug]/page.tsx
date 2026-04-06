@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
-  'ai-ml': '#ff6b35',
-  robotics: '#ff2d78',
-  future: '#00ff88',
-  society: '#ffcc00',
-  science: '#00cfff',
-  tools: '#bf5fff',
+  'ai-ml': '#a78bfa',
+  robotics: '#f472b6',
+  future: '#34d399',
+  society: '#fbbf24',
+  science: '#38bdf8',
+  tools: '#c084fc',
 };
 
 export default async function BlogPostPage({ params }: Props) {
@@ -70,14 +70,14 @@ export default async function BlogPostPage({ params }: Props) {
         </nav>
 
         {/* 헤더 */}
-        <header style={{ marginBottom: '2.5rem', borderBottom: '1px solid #1a1a1a', paddingBottom: '2rem' }}>
+        <header style={{ marginBottom: '2.5rem', borderBottom: '1px solid rgba(139,92,246,0.2)', paddingBottom: '2rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '1rem', flexWrap: 'wrap' }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: color, display: 'inline-block' }} />
             <span style={{ fontSize: '0.65rem', fontWeight: 800, color, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
               {catName}
             </span>
             {post.journal && (
-              <span style={{ border: '1px solid #222', color: '#555', fontSize: '0.65rem', padding: '2px 8px', letterSpacing: '0.05em' }}>
+              <span style={{ border: '1px solid rgba(139,92,246,0.3)', color: '#8b9cc8', fontSize: '0.65rem', padding: '2px 8px', letterSpacing: '0.05em', borderRadius: 4 }}>
                 {post.journal}
               </span>
             )}
@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: Props) {
             {post.summary}
           </p>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'monospace', fontSize: '0.7rem', color: '#333' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'monospace', fontSize: '0.7rem', color: '#4a5880' }}>
             <span>{post.date}</span>
             {post.readingTime && <><span>·</span><span>{post.readingTime}</span></>}
           </div>
@@ -111,8 +111,7 @@ export default async function BlogPostPage({ params }: Props) {
           <div style={{ marginTop: '2rem', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
             {post.tags.map((tag) => (
               <Link key={tag} href={`/tag/${encodeURIComponent(tag)}`}
-                style={{ border: '1px solid #222', color: '#555', fontSize: '0.72rem', padding: '4px 12px', fontWeight: 600, transition: 'all 0.2s' }}
-                className="hover:border-[#ff6b35] hover:text-[#ff6b35]">
+                className="keyword-pill">
                 #{tag}
               </Link>
             ))}
