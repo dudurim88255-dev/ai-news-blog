@@ -1,10 +1,10 @@
 ---
-title: "No Single Best Model for Diversity: Learning a Router for Sample Diversity"
+title: "다양한 답변엔 만능 LLM이 없다 — 쿼리별 최적 모델을 선택하는 라우터 연구"
 slug: "2026-04-05-no-single-best-model-for-diversity-learning-a-router-for-sam"
 date: "2026-04-05"
 category: "society"
-tags: []
-summary: ""
+tags: ["LLM", "모델 라우팅", "답변 다양성", "AI 평가", "arXiv"]
+summary: "18개 LLM을 평가한 결과 다양한 답변 생성에서 항상 최고인 단일 모델은 없었습니다. 쿼리마다 최적 모델을 선택하는 라우터로 기존 단일 최고 모델보다 26.3% vs 23.8%의 성능 향상을 달성했습니다."
 arxivId: "2604.02319v1"
 paperDOI: ""
 journal: "arXiv"
@@ -14,8 +14,15 @@ coverImage: ""
 
 ## 핵심 내용
 
-When posed with prompts that permit a large number of valid answers, comprehensively generating them is the first step towards satisfying a wide range of users. In this paper, we study methods to elicit a comprehensive set of valid responses. To evaluate this, we introduce **diversity coverage**, a metric that measures the total quality scores assigned to each **unique** answer in the predicted answer set relative to the best possible answer set with the same number of answers. Using this metric, we evaluate 18 LLMs, finding no single model dominates at generating diverse responses to a wide range of open-ended prompts. Yet, per each prompt, there exists a model that outperforms all other models significantly at generating a diverse answer set. Motivated by this finding, we introduce a router that predicts the best model for each query. On NB-Wildchat, our trained router outperforms the single best model baseline (26.3% vs $23.8%). We further show generalization to an out-of-domain dataset (NB-Curated) as well as different answer-generation prompting strategies. Our work lays foundation for studying generating comprehensive answers when we have access to a suite of models.
+하나의 질문에 수많은 유효한 답이 가능할 때, 그 답들을 최대한 포괄적으로 생성하는 것이 다양한 사용자를 만족시키는 첫걸음입니다. 이 연구는 LLM이 얼마나 포괄적인 답변 집합을 생성할 수 있는지를 연구합니다.
 
+이를 측정하기 위해 **다양성 커버리지(diversity coverage)**라는 지표를 새롭게 제안했습니다. 예측된 답변 집합에서 각 고유 답변에 부여된 품질 점수의 합을, 같은 수의 답변으로 구성된 최선의 집합과 비교하는 방식입니다.
+
+이 지표로 **18개 LLM**을 평가한 결과, 개방형 질문에서 다양한 답변을 생성하는 데 있어 항상 최고인 단일 모델은 존재하지 않았습니다. 그러나 **개별 질문마다** 다른 모델들을 크게 능가하는 최적의 모델이 존재했습니다.
+
+이 발견에서 착안해, 각 쿼리에 맞는 최적 모델을 예측하는 **라우터(router)**를 개발했습니다. NB-Wildchat 데이터셋에서 학습된 라우터는 단일 최고 모델 기준선을 **26.3% vs 23.8%**로 능가했습니다. 도메인 외부 데이터셋(NB-Curated)과 다양한 답변 생성 전략에서도 일반화 성능을 확인했습니다.
+
+여러 모델에 접근할 수 있는 환경에서 포괄적인 답변 생성을 연구하는 기반을 마련한 연구입니다.
 
 ---
 

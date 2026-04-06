@@ -1,10 +1,10 @@
 ---
-title: "ReVAR: A Data-Driven Algorithm for Generating Aero-Optic Phase Screens"
+title: "항공기 주변 난류가 만드는 광학 왜곡, 데이터 기반 알고리즘 ReVAR로 정밀 시뮬레이션"
 slug: "2026-04-05-revar-a-data-driven-algorithm-for-generating-aero-optic-phas"
 date: "2026-04-05"
 category: "science"
-tags: []
-summary: ""
+tags: ["에어로 광학", "데이터 기반 알고리즘", "난류 시뮬레이션", "자기회귀", "arXiv"]
+summary: "항공기 주변 난류로 인한 광학 왜곡(에어로 광학 효과)을 정밀 재현하는 데이터 기반 알고리즘 ReVAR를 소개합니다. 기존 방법 대비 시간적 전력 스펙트럼과 주요 통계 지표를 더 정확하게 맞췄습니다."
 arxivId: "2604.02326v1"
 paperDOI: ""
 journal: "arXiv"
@@ -14,8 +14,21 @@ coverImage: ""
 
 ## 핵심 내용
 
-The propagation of light through a turbulent flow field around an aircraft results in optical distortions commonly known as aero-optic effects. The development of methods to mitigate these effects requires large amounts of realistic aero-optic data. However, methods for obtaining this data, including experiment, computational fluid dynamics, and simple phase screen algorithms (e.g., boiling flow), each have significant drawbacks such as high cost, high computation, limited quantity, and/or inaccurate statistics. More recently, data-driven algorithms have been proposed that are computationally efficient and can synthesize aero-optic data to match the statistics of measured data, but these approaches still have drawbacks including limited quality, inaccurate statistics, and the use of complicated algorithms. In this paper, we introduce ReVAR (Re-whitened Vector AutoRegression), a data-driven algorithm for generating synthetic aero-optic data that matches the statistics of measured data. A key contribution in this algorithm is Long-Range AutoRegression, a linear predictive model that combines a standard autoregression with a set of low-pass filters of the data to fit both short-range and long-range temporal statistics. ReVAR uses Long-Range AR together with a spatial re-whitening step to convert measured aero-optic data to temporally and spatially un-correlated white noise. ReVAR can then generate synthetic aero-optic data by reversing this process using white noise input. Using two measured turbulent boundary layer data sets, we demonstrate that ReVAR better matches the measured data's temporal power spectrum and other key metrics than do two conventional phase screen generation methods and an existing single time-lag autoregressive model.
+항공기 주변의 난류 유동장을 통해 빛이 전파될 때 **에어로 광학 효과(aero-optic effects)**라 불리는 광학 왜곡이 발생합니다. 이 왜곡을 줄이는 기술을 개발하려면 현실적인 에어로 광학 데이터가 대량으로 필요합니다.
 
+그러나 기존 데이터 획득 방법들은 각각 한계가 있습니다.
+
+- **실험**: 비용이 매우 높고 데이터 양이 제한적
+- **전산유체역학(CFD)**: 계산 비용이 크고 시간이 많이 소요
+- **단순 위상 화면 알고리즘(예: boiling flow)**: 통계적 정확도 부족
+
+최근에는 측정 데이터의 통계를 맞추는 데이터 기반 알고리즘이 제안됐지만, 품질 한계와 복잡한 알고리즘 구조라는 문제가 남아있었습니다.
+
+이 연구는 **ReVAR(Re-whitened Vector AutoRegression)**를 제안합니다. 측정 데이터의 통계를 정확히 재현하는 데이터 기반 합성 에어로 광학 데이터 생성 알고리즘입니다.
+
+핵심 기여는 **장거리 자기회귀(Long-Range AutoRegression)**입니다. 표준 자기회귀에 데이터의 저역통과 필터를 결합해 단거리와 장거리 시간 통계를 모두 적합시키는 선형 예측 모델입니다. ReVAR는 이를 활용해 측정 데이터를 시공간적으로 비상관된 백색 잡음으로 변환하고, 역과정으로 합성 데이터를 생성합니다.
+
+난류 경계층 데이터셋 2종 실험에서 ReVAR는 기존 두 가지 위상 화면 생성 방법과 단일 시간지연 자기회귀 모델보다 **시간적 전력 스펙트럼 및 주요 지표를 더 정확하게** 재현했습니다.
 
 ---
 

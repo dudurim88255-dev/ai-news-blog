@@ -1,10 +1,10 @@
 ---
-title: "Novel Memory Forgetting Techniques for Autonomous AI Agents: Balancing Relevance and Efficiency"
+title: "AI 에이전트도 잊어야 한다 — 관련성 기반 적응형 망각으로 장기 대화 성능 유지"
 slug: "2026-04-05-novel-memory-forgetting-techniques-for-autonomous-ai-agents-"
 date: "2026-04-05"
 category: "robotics"
-tags: []
-summary: ""
+tags: ["AI 에이전트", "메모리 관리", "장기 대화", "망각 기법", "arXiv"]
+summary: "장기 대화 AI 에이전트에서 기억이 무한정 쌓이면 성능이 저하됩니다. 관련성 점수 기반의 적응형 예산 망각 프레임워크로 F1 0.583 기준선을 넘기며 허위 기억 비율을 낮추는 데 성공했습니다."
 arxivId: "2604.02280v1"
 paperDOI: ""
 journal: "arXiv"
@@ -14,8 +14,19 @@ coverImage: ""
 
 ## 핵심 내용
 
-Long-horizon conversational agents require persistent memory for coherent reasoning, yet uncontrolled accumulation causes temporal decay and false memory propagation. Benchmarks such as LOCOMO and LOCCO report performance degradation from 0.455 to 0.05 across stages, while MultiWOZ shows 78.2% accuracy with 6.8% false memory rate under persistent retention. This work introduces an adaptive budgeted forgetting framework that regulates memory through relevanceguided scoring and bounded optimization. The approach integrates recency, frequency, and semantic alignment to maintain stability under constrained context. Comparative analysis demonstrates improved long-horizon F1 beyond 0.583 baseline levels, higher retention consistency, and reduced false memory behavior without increasing context usage. These findings confirm that structured forgetting preserves reasoning performance while preventing unbounded memory growth in extended conversational settings.
+장기 대화를 이어가는 AI 에이전트는 일관된 추론을 위해 지속적인 기억이 필요합니다. 그러나 기억이 통제 없이 쌓이면 **시간적 감쇠**와 **허위 기억 전파**라는 문제가 발생합니다.
 
+LOCOMO, LOCCO 벤치마크에서는 대화 단계가 지나면서 성능이 0.455에서 0.05로 급락하는 현상이 관찰됐습니다. MultiWOZ에서는 기억을 계속 유지할 경우 78.2% 정확도를 보이지만 **허위 기억 비율이 6.8%**에 달했습니다.
+
+이 연구는 **적응형 예산 망각 프레임워크(adaptive budgeted forgetting framework)**를 도입했습니다. 핵심 아이디어는 무조건 기억하는 게 아니라, **관련성 점수 기반**으로 무엇을 버릴지 결정하는 것입니다. 구체적으로 세 가지 요소를 통합합니다.
+
+- **최신성(recency)**: 최근 정보일수록 높은 점수
+- **빈도(frequency)**: 자주 등장한 내용일수록 유지
+- **의미 정렬(semantic alignment)**: 현재 맥락과 관련성이 높은 기억 보존
+
+제한된 컨텍스트 내에서 안정성을 유지하기 위해 경계 최적화(bounded optimization)를 적용했습니다.
+
+실험 결과, 기준선(F1 0.583)을 초과하는 장기 성능을 달성하면서 컨텍스트 사용량 증가 없이 허위 기억 비율을 낮췄습니다. 구조적 망각이 장기 대화에서 추론 성능을 보존하면서 기억의 무한 증가를 막는다는 것을 확인했습니다.
 
 ---
 
