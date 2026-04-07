@@ -18,13 +18,14 @@ const RSS_SOURCES = [
   { url: 'https://openai.com/blog/rss.xml',             category: 'news',    source: 'OpenAI' },
   { url: 'https://www.anthropic.com/rss.xml',            category: 'news',    source: 'Anthropic' },
   { url: 'https://blog.google/technology/ai/rss/',       category: 'news',    source: 'Google AI' },
-  { url: 'https://stability.ai/blog/rss.xml',            category: 'news',    source: 'Stability AI' },
   { url: 'https://mistral.ai/news/rss.xml',              category: 'news',    source: 'Mistral' },
   // Product Hunt AI 카테고리
   { url: 'https://www.producthunt.com/feed?category=artificial-intelligence', category: 'review', source: 'Product Hunt' },
-  // AI 미디어
-  { url: 'https://www.theverge.com/ai-artificial-intelligence/rss/index.xml', category: 'news',   source: 'The Verge' },
-  { url: 'https://venturebeat.com/category/ai/feed/',    category: 'news',    source: 'VentureBeat' },
+  // AI 미디어 (동작 확인된 URL)
+  { url: 'https://www.theverge.com/rss/ai-artificial-intelligence/index.xml', category: 'news',   source: 'The Verge' },
+  { url: 'https://feeds.feedburner.com/venturebeat/SZYF',  category: 'news',  source: 'VentureBeat' },
+  { url: 'https://techcrunch.com/category/artificial-intelligence/feed/', category: 'news', source: 'TechCrunch' },
+  { url: 'https://www.artificialintelligence-news.com/feed/', category: 'news', source: 'AI News' },
 ];
 
 // ── 유틸 ──────────────────────────────────────────────────────────────────────
