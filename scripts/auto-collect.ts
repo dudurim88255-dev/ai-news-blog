@@ -118,6 +118,22 @@ function decodeHtml(str: string): string {
     .replace(/&nbsp;/g, ' ');
 }
 
+// Jina Reader로 원문 전체 내용 가져오기 (실패 시 null 반환)
+async function fetchJinaContent(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://r.jina.ai/${url}`, {
+      headers: { 'Accept': 'text/plain', 'User-Agent': 'ainews-blog/1.0' },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) return null;
+    const text = await res.text();
+    // 8000자로 제한 (Claude 토큰 절약)
+    return text.slice(0, 8000).trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 // ── 최고 후보 선택 ────────────────────────────────────────────────────────────
 
 async function pickBestItem(items: RssItem[]): Promise<RssItem> {
@@ -228,13 +244,18 @@ const SYSTEM_PROMPT = `당신은 한국의 AI 전문 블로거입니다.
 - 과도한 이모지·감탄사
 - 근거 없는 주관적 평가`;
 
-async function generatePostBody(item: RssItem, postType: PostType): Promise<string> {
+async function generatePostBody(item: RssItem, postType: PostType, fullContent: string | null): Promise<string> {
+  // Jina 원문이 있으면 사용, 없으면 RSS description 폴백
+  const articleContent = fullContent
+    ? `원문 전체 내용:\n${fullContent}`
+    : `원문 요약: ${item.description}`;
+
   const prompts: Record<PostType, string> = {
     NEW_TOOL_REVIEW: `다음 AI 도구를 리뷰하는 블로그 글을 작성하세요.
 
 도구/서비스: ${item.title}
 출처: ${item.source}
-원문 요약: ${item.description}
+${articleContent}
 원문 링크: ${item.link}
 
 글 구조:
@@ -251,7 +272,7 @@ async function generatePostBody(item: RssItem, postType: PostType): Promise<stri
     VS_COMPARISON: `다음 주제로 AI 도구 비교 블로그 글을 작성하세요.
 
 주제: ${item.title}
-배경 정보: ${item.description}
+${articleContent}
 출처: ${item.link}
 
 글 구조:
@@ -266,7 +287,7 @@ async function generatePostBody(item: RssItem, postType: PostType): Promise<stri
     PRICING_GUIDE: `다음 AI 도구/서비스의 가격을 분석하는 블로그 글을 작성하세요.
 
 주제: ${item.title}
-배경 정보: ${item.description}
+${articleContent}
 출처: ${item.link}
 
 글 구조:
@@ -282,7 +303,7 @@ async function generatePostBody(item: RssItem, postType: PostType): Promise<stri
     HOW_TO_GUIDE: `다음 AI 도구 활용법 블로그 글을 작성하세요.
 
 주제: ${item.title}
-배경 정보: ${item.description}
+${articleContent}
 출처: ${item.link}
 
 글 구조:
@@ -298,8 +319,8 @@ async function generatePostBody(item: RssItem, postType: PostType): Promise<stri
     NEWS_SUMMARY: `다음 AI 업계 뉴스를 분석하는 블로그 글을 작성하세요.
 
 뉴스 제목: ${item.title}
-내용 요약: ${item.description}
 출처: ${item.source} (${item.link})
+${articleContent}
 
 글 구조:
 ## 무슨 일이 일어난 건가? (30초 요약)
@@ -316,13 +337,17 @@ async function generatePostBody(item: RssItem, postType: PostType): Promise<stri
   return result ?? `## 핵심 내용\n\n${item.description}\n\n> **출처**: [${item.source}](${item.link})`;
 }
 
-async function generateMeta(item: RssItem): Promise<{ title: string; summary: string; tags: string[]; searchKeyword: string }> {
+async function generateMeta(item: RssItem, fullContent: string | null): Promise<{ title: string; summary: string; tags: string[]; searchKeyword: string }> {
+  const context = fullContent
+    ? fullContent.slice(0, 500)
+    : item.description.slice(0, 300);
+
   const result = await callClaude(
     '한국어로 짧게 답하세요. JSON만 출력하세요.',
     `다음 AI 뉴스를 보고 JSON을 채워주세요.
 
 원문 제목: ${item.title}
-내용: ${item.description.slice(0, 300)}
+내용: ${context}
 
 규칙:
 - title: 한국인이 구글에서 검색할 법한 키워드 포함 (예: "ChatGPT 새 기능", "구글 Gemini 업데이트"). 25~40자
@@ -388,9 +413,18 @@ async function savePost(item: RssItem, postType: PostType): Promise<string> {
     : postType === 'NEWS_SUMMARY' ? 'news'
     : 'review';
 
+  // Jina로 원문 전체 내용 가져오기 (실패해도 계속 진행)
+  console.log(`  🔍 Jina로 원문 수집 중: ${item.link}`);
+  const fullContent = await fetchJinaContent(item.link);
+  if (fullContent) {
+    console.log(`  ✅ Jina 성공 (${fullContent.length}자)`);
+  } else {
+    console.log('  ⚠️  Jina 실패 — RSS description으로 폴백');
+  }
+
   const [meta, body] = await Promise.all([
-    generateMeta(item),
-    generatePostBody(item, postType),
+    generateMeta(item, fullContent),
+    generatePostBody(item, postType, fullContent),
   ]);
 
   const bodyWithLinks = insertAffiliateLinks(body);
