@@ -103,7 +103,8 @@ async function fetchRss(src: { url: string; category: string; source: string }):
       }
     }
     return items;
-  } catch {
+  } catch (err) {
+    console.warn(`RSS 수집 실패 [${src.source}]:`, err instanceof Error ? err.message : err);
     return [];
   }
 }
@@ -215,7 +216,7 @@ async function callClaude(systemPrompt: string, userPrompt: string, maxTokens = 
     console.warn(`Claude API 오류: ${res.status}`);
     return null;
   }
-  const data: any = await res.json();
+  const data = await res.json() as { content?: Array<{ type: string; text: string }> };
   return data.content?.[0]?.text?.trim() ?? null;
 }
 

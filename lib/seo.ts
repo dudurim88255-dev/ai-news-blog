@@ -45,7 +45,7 @@ export function buildArticleJsonLd(post: PostMeta) {
   const image = post.coverImage ? `${SITE_URL}${post.coverImage}` : buildOgImageUrl(post);
   return {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'NewsArticle',
     headline: post.title,
     description: post.summary,
     image,
