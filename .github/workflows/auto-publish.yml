@@ -1,9 +1,9 @@
-﻿name: ?쇰Ц ?먮룞 ?섏쭛 & 諛쒗뻾
+name: AI News Auto Publish
 
 on:
   schedule:
-    - cron: '0 0,12 * * *'
-  workflow_dispatch:                 # ?섎룞 ?ㅽ뻾 踰꾪듉
+    - cron: '0 0,12 * * *'   # 매일 09:00, 21:00 KST (UTC 00:00, 12:00)
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,29 +25,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: ?쇰Ц ?먮룞 ?섏쭛 & ?ъ뒪???앹꽦
+      - name: API key check
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY is not set"
+            exit 1
+          fi
+          echo "ANTHROPIC_API_KEY confirmed"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Collect RSS and generate post
         run: npx tsx scripts/auto-collect.ts
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
-      - name: 蹂寃쎌궗???뺤씤
+      - name: Check for changes
         id: changes
         run: |
           git add content/
           git diff --staged --quiet && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
 
-      - name: 而ㅻ컠 & ?몄떆
+      - name: Commit and push
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "feat: ?먮룞 ?쇰Ц ?ъ뒪??$(date +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "auto: $(date +'%Y-%m-%d %H:%M UTC') AI news post"
           git push
 
-      - name: Vercel 諛고룷
+      - name: Deploy to Vercel
         if: steps.changes.outputs.changed == 'true'
         run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
         env:
           VERCEL_ORG_ID: team_ruRodWfalxM5k4QldqQgNq7d
           VERCEL_PROJECT_ID: prj_lfSGTNpLMun3dDkHrknQRezz6WzP
-
