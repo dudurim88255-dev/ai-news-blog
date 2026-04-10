@@ -5,19 +5,28 @@ export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const title = searchParams.get('title') ?? '인간 수명 150세 가능한가?';
+  const title = searchParams.get('title') ?? 'AI News KR';
   const category = searchParams.get('category') ?? '';
-  const journal = searchParams.get('journal') ?? '';
 
   const CATEGORY_COLORS: Record<string, string> = {
-    organoid: '#4fd1c5',
-    'anti-aging': '#f6c90e',
-    genomics: '#a78bfa',
-    'stem-cell': '#34d399',
-    'drug-discovery': '#f87171',
-    neuroscience: '#60a5fa',
+    review:     '#a78bfa',
+    comparison: '#f472b6',
+    guide:      '#34d399',
+    pricing:    '#fbbf24',
+    news:       '#38bdf8',
+    roundup:    '#c084fc',
   };
-  const accentColor = CATEGORY_COLORS[category] ?? '#4fd1c5';
+  const accentColor = CATEGORY_COLORS[category] ?? '#38bdf8';
+
+  const CATEGORY_LABELS: Record<string, string> = {
+    review:     '도구 리뷰',
+    comparison: 'VS 비교',
+    guide:      '사용법·팁',
+    pricing:    '가격 분석',
+    news:       'AI 뉴스',
+    roundup:    '도구 모음',
+  };
+  const categoryLabel = CATEGORY_LABELS[category] ?? 'AI 뉴스';
 
   return new ImageResponse(
     (
@@ -33,17 +42,17 @@ export async function GET(req: NextRequest) {
           fontFamily: 'sans-serif',
         }}
       >
-        {/* 상단 바 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: '4px', height: '28px', background: accentColor, borderRadius: '2px' }} />
-          <span style={{ color: accentColor, fontSize: '18px', fontWeight: 700, letterSpacing: '0.05em' }}>
-            인간 수명 150세 가능한가?
-          </span>
-          {journal && (
-            <span style={{ marginLeft: 'auto', background: `${accentColor}20`, border: `1px solid ${accentColor}50`, color: accentColor, borderRadius: '20px', padding: '4px 14px', fontSize: '15px' }}>
-              {journal}
+        {/* 상단: 사이트명 + 카테고리 뱃지 */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ width: '4px', height: '28px', background: accentColor, borderRadius: '2px' }} />
+            <span style={{ color: '#e8edf5', fontSize: '22px', fontWeight: 700, letterSpacing: '0.02em' }}>
+              AI News KR
             </span>
-          )}
+          </div>
+          <span style={{ background: `${accentColor}25`, border: `1px solid ${accentColor}60`, color: accentColor, borderRadius: '20px', padding: '6px 18px', fontSize: '16px', fontWeight: 600 }}>
+            {categoryLabel}
+          </span>
         </div>
 
         {/* 제목 */}
@@ -51,9 +60,9 @@ export async function GET(req: NextRequest) {
           <h1
             style={{
               color: '#e8edf5',
-              fontSize: title.length > 40 ? '42px' : '52px',
+              fontSize: title.length > 35 ? '44px' : '56px',
               fontWeight: 800,
-              lineHeight: 1.3,
+              lineHeight: 1.35,
               margin: 0,
               letterSpacing: '-0.02em',
             }}
@@ -62,12 +71,12 @@ export async function GET(req: NextRequest) {
           </h1>
         </div>
 
-        {/* 하단 */}
+        {/* 하단: 태그라인 + 강조점 */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ color: '#8b96b0', fontSize: '16px' }}>150세 시대의 생존전략</span>
+          <span style={{ color: '#8b96b0', fontSize: '16px' }}>대한민국 AI의 미래를 잇다</span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: accentColor }} />
-            <span style={{ color: '#8b96b0', fontSize: '16px' }}>생명과학 논문 해설</span>
+            <span style={{ color: '#8b96b0', fontSize: '16px' }}>ainews-kr.vercel.app</span>
           </div>
         </div>
       </div>

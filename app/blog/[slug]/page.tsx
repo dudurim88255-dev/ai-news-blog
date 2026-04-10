@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const CATEGORY_COLOR: Record<string, string> = {
-  'ai-ml': '#a78bfa',
-  robotics: '#f472b6',
-  future: '#34d399',
-  society: '#fbbf24',
-  science: '#38bdf8',
-  tools: '#c084fc',
+  review:     '#a78bfa',
+  comparison: '#f472b6',
+  guide:      '#34d399',
+  pricing:    '#fbbf24',
+  news:       '#38bdf8',
+  roundup:    '#c084fc',
 };
 
 export default async function BlogPostPage({ params }: Props) {
