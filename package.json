@@ -1,5 +1,5 @@
 {
-  "name": "science-blog",
+  "name": "ainews-kr",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@next/font": "^14.2.15",
     "@vercel/analytics": "^2.0.1",
     "@vercel/og": "^0.11.1",
     "gray-matter": "^4.0.3",

@@ -334,7 +334,8 @@ ${articleContent}
 마지막에 출처: > **출처**: [${item.source}](${item.link})`,
   };
 
-  const result = await callClaude(SYSTEM_PROMPT, prompts[postType], 3500);
+  // 한국어 3000자 = 약 4500~6000 토큰 필요
+  const result = await callClaude(SYSTEM_PROMPT, prompts[postType], 6000);
   return result ?? `## 핵심 내용\n\n${item.description}\n\n> **출처**: [${item.source}](${item.link})`;
 }
 
@@ -431,9 +432,9 @@ async function savePost(item: RssItem, postType: PostType): Promise<string> {
   const bodyWithLinks = insertAffiliateLinks(body);
   const slug = `${today()}-${slugify(item.title)}`;
 
-  // 3000자 미만이면 스킵
-  if (bodyWithLinks.length < 800) {
-    throw new Error(`본문이 너무 짧음 (${bodyWithLinks.length}자)`);
+  // AdSense 심사 기준 충족을 위해 3000자 이상 필요
+  if (bodyWithLinks.length < 3000) {
+    throw new Error(`본문이 너무 짧음 (${bodyWithLinks.length}자, 최소 3000자)`);
   }
 
   const mdx = `---
@@ -467,18 +468,19 @@ async function main() {
   const existingTitles = getExistingTitles();
   console.log(`📚 기존 포스트 ${existingTitles.size}개 확인\n`);
 
-  // RSS 수집
+  // RSS 병렬 수집 (순차 대비 ~8배 빠름)
+  const rssResults = await Promise.allSettled(RSS_SOURCES.map(fetchRss));
   const allItems: RssItem[] = [];
-  for (const src of RSS_SOURCES) {
-    const items = await fetchRss(src);
-    for (const item of items) {
+  for (const result of rssResults) {
+    if (result.status !== 'fulfilled') continue;
+    for (const item of result.value) {
       const key = item.title.toLowerCase().slice(0, 40);
       if (!existingTitles.has(key)) {
         allItems.push(item);
         existingTitles.add(key);
       }
+      if (allItems.length >= 30) break; // 30개 후보에서 가장 핫한 1개 선택
     }
-    if (allItems.length >= 30) break; // 30개 후보에서 가장 핫한 1개 선택
   }
 
   if (allItems.length === 0) {

@@ -1,10 +1,26 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Noto_Sans_KR, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, SITE_TAGLINE } from '@/lib/seo';
+
+// next/font: 자체 호스팅으로 CLS 없음, 네트워크 요청 불필요
+const notoSansKR = Noto_Sans_KR({
+  subsets: ['latin'],
+  weight: ['400', '500', '700', '900'],
+  variable: '--font-noto',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -47,26 +63,20 @@ const websiteJsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={`${notoSansKR.variable} ${jetbrainsMono.variable}`}>
       <head>
         <meta name="theme-color" content="#0a0a0a" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
-        {/* AdSense 소유권 확인 및 광고 */}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3012911913573742"
-          crossOrigin="anonymous"
-        />
       </head>
+      {/* AdSense — next/script로 로드해야 hydration 경고 없음 */}
+      <Script
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3012911913573742"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+      />
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-8760R71HNS"
         strategy="afterInteractive"

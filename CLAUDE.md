@@ -1,27 +1,36 @@
-# CLAUDE.md (과학블로그 프로젝트 — 프로젝트 루트에 배치)
+# CLAUDE.md (AI News KR 프로젝트 — 프로젝트 루트에 배치)
 
 ## 프로젝트 정보
 
-- 이름: 과학블로그 (한국어 생명과학 논문 해설)
-- 스택: Next.js 15 (App Router) + Vercel
-- API: Anthropic API (난이도 토글), CrossRef API (DOI 자동 정보)
+- 이름: AI News KR (한국 AI 뉴스 자동 발행 블로그)
+- URL: https://ainews-kr.vercel.app
+- 스택: Next.js 16 (App Router) + TypeScript + Tailwind CSS + MDX
+- API: Anthropic API (claude-sonnet-4-6, 포스트 자동 생성)
 - AdSense: ca-pub-3012911913573742
-- 배포: `npx vercel --prod` (수동)
+- 배포: GitHub Actions 자동 (매일 09:00, 21:00 KST) + git push → Vercel
 
-## 프로젝트 구조 규칙
+## 디렉토리 구조
 
-- app/ 디렉토리 구조 (App Router)
-- 글 데이터: content/ 또는 MDX 파일
-- API 라우트: app/api/
-- 컴포넌트: components/ (서버/클라이언트 명확히 분리)
-- 스타일: Tailwind CSS
+- app/ — Next.js App Router 페이지
+- components/ — React 컴포넌트
+- content/posts/ — 자동 생성 MDX 포스트
+- lib/ — posts.ts, seo.ts, categories.ts
+- scripts/ — auto-collect.ts (메인 자동화 스크립트)
+- .github/workflows/ — auto-publish.yml (하루 2회 실행)
+
+## 주요 명령어
+
+- `npm run dev` — 개발 서버
+- `npm run build` — 빌드 확인
+- `npx tsx scripts/auto-collect.ts` — 포스트 수동 생성 (ANTHROPIC_API_KEY 필요)
 
 ## 핵심 기능
 
-- 난이도 토글: 전문가 버전 ↔ 쉬운 버전 (Anthropic API)
-- DOI 입력 → CrossRef에서 논문 메타데이터 자동 추출
-- AdSense 광고 배치
-- SEO 최적화 (메타태그, OG 이미지)
+- RSS 11개 소스 자동 수집 → Claude가 최고 뉴스 1개 선택
+- Jina Reader로 원문 전체 수집 후 한국어 포스트 자동 생성
+- 포스트 유형 자동 분류: NEWS_SUMMARY / NEW_TOOL_REVIEW / VS_COMPARISON / HOW_TO_GUIDE / PRICING_GUIDE
+- AdSense 광고 배치 (ca-pub-3012911913573742)
+- SEO 최적화 (메타태그, JSON-LD, OG 이미지, 사이트맵)
 
 ## 주의사항
 
