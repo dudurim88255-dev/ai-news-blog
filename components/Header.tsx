@@ -44,14 +44,17 @@ export function Header() {
           <Link href="/blog" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
             최신 뉴스
           </Link>
-          <Link href="/category/ai-ml" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
-            기술
+          <Link href="/category/news" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
+            AI 뉴스
           </Link>
-          <Link href="/category/future" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
-            트렌드
+          <Link href="/category/review" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
+            도구 리뷰
           </Link>
-          <Link href="/category/society" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
-            커뮤니티
+          <Link href="/category/guide" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
+            사용법·팁
+          </Link>
+          <Link href="/category/roundup" style={{ color: '#8b9cc8', fontSize: '0.88rem', fontWeight: 600 }} className="hover:text-white transition-colors">
+            도구 모음
           </Link>
         </nav>
 
