@@ -4,6 +4,7 @@ import { getAllPosts } from '@/lib/posts';
 import { CATEGORY_MAP } from '@/lib/categories';
 import { PostCard } from '@/components/PostCard';
 import { AdBanner } from '@/components/AdBanner';
+import { buildWebSiteJsonLd } from '@/lib/seo';
 
 const CATEGORY_IMAGE: Record<string, string> = {
   'ai-ml':   '/images/categories/ai-ml.png',
@@ -15,6 +16,7 @@ const CATEGORY_IMAGE: Record<string, string> = {
 };
 
 export default function HomePage() {
+  const websiteJsonLd = buildWebSiteJsonLd();
   const posts = getAllPosts();
   const featured = posts[0];
   const gridPosts = posts.slice(0, 6);
@@ -26,6 +28,7 @@ export default function HomePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
 
       {/* ── 히어로 + 사이드바 ── */}
       <section className="mb-8">

@@ -58,6 +58,44 @@ export function buildArticleJsonLd(post: PostMeta) {
   };
 }
 
+export function buildWebSiteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    inLanguage: 'ko-KR',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: { '@type': 'EntryPoint', urlTemplate: `${SITE_URL}/search?q={search_term_string}` },
+      'query-input': 'required name=search_term_string',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` },
+      sameAs: ['https://github.com/dudurim88255-dev'],
+    },
+  };
+}
+
+export function buildPersonJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: '흥권',
+    url: `${SITE_URL}/about`,
+    sameAs: [
+      'https://github.com/dudurim88255-dev',
+      'https://aiscout-henna.vercel.app',
+      'https://science-blog-dun.vercel.app',
+    ],
+    knowsAbout: ['인공지능', 'AI 뉴스', '로보틱스', '양자컴퓨팅', '미래기술', 'LLM'],
+  };
+}
+
 export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
     '@context': 'https://schema.org',

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION } from '@/lib/seo';
+import { SITE_NAME, SITE_TAGLINE, SITE_DESCRIPTION, buildPersonJsonLd } from '@/lib/seo';
 
 export const metadata: Metadata = {
   title: '소개',
@@ -7,8 +7,10 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const personJsonLd = buildPersonJsonLd();
   return (
     <div className="max-w-2xl mx-auto px-4 py-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
       <div className="text-center mb-12">
         <div style={{
           width: 64, height: 64, borderRadius: 16,
