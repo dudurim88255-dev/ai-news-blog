@@ -37,7 +37,7 @@ export function getAllPosts(): PostMeta[] {
     return {
       slug,
       title: data.title ?? '',
-      date: data.date ?? '',
+      date: data.date ? String(data.date).slice(0, 10) : '',
       category: data.category ?? '',
       tags: data.tags ?? [],
       summary: data.summary ?? '',
@@ -59,7 +59,7 @@ export function getPostBySlug(slug: string): Post | null {
   return {
     slug,
     title: data.title ?? '',
-    date: data.date ?? '',
+    date: data.date ? String(data.date).slice(0, 10) : '',
     category: data.category ?? '',
     tags: data.tags ?? [],
     summary: data.summary ?? '',
