@@ -1,0 +1,87 @@
+---
+title: "Kronos: 금융 K선의 GPT, AAAI 2026 채택된 오픈소스 캔들 파운데이션 모델"
+slug: "2026-04-12-kronos-financial-kline-foundation-model-review"
+date: "2026-04-12"
+category: "ai-ml"
+tags: ["Kronos", "금융 AI", "시계열 예측", "캔들차트", "파운데이션 모델", "퀀트", "오픈소스", "AAAI 2026"]
+summary: "칭화대 연구팀이 공개한 Kronos는 전 세계 45개 거래소의 12억 개 K선 데이터로 훈련된 최초의 오픈소스 금융 캔들 파운데이션 모델이다. AAAI 2026에 채택됐으며, RankIC 93% 향상이라는 벤치마크 결과를 냈다."
+searchKeyword: "Kronos 금융 AI K선 예측"
+sourceUrl: "https://github.com/shiyu-coder/Kronos"
+sourceName: "GitHub / arXiv"
+coverImage: ""
+---
+
+## Kronos는 금융 K선 데이터를 언어처럼 읽는 오픈소스 시계열 파운데이션 모델이다
+
+경험, 지표, 심지어 신비주의에 의존했던 K선 분석에 AI 파운데이션 모델이 정식으로 진입했다. Kronos는 칭화대 연구팀(Yu Shi, Jian Li 등)이 개발한 decoder-only 트랜스포머 기반 금융 시계열 예측 모델로, 전 세계 45개 거래소의 12억 개 OHLCV 캔들 레코드로 사전훈련됐다. MIT 라이선스로 공개돼 있으며, 2025년 8월 arXiv에 등재되고 AAAI 2026에 채택된 학술적으로 검증된 작업이다.
+
+---
+
+## 무엇을 해결하나
+
+기존 금융 시계열 예측은 크게 두 가지 한계가 있었다. 첫째, 종목·거래소마다 따로 모델을 훈련해야 했다. 둘째, 연속적인 가격 값을 직접 예측하다 보니 노이즈에 취약했다. Kronos는 LLM이 텍스트를 토큰으로 처리하는 방식과 동일한 원리로 이 두 문제를 동시에 공략한다.
+
+연속적인 K선 데이터를 이산 토큰으로 변환한 뒤 Transformer가 자기회귀적으로 미래 추세를 예측하는 구조다. 45개 거래소의 방대한 데이터로 훈련된 단일 모델이 다양한 종목과 시간대에 제로샷으로 적용 가능하다.
+
+---
+
+## 핵심 기능 3가지
+
+**① 2단계 토크나이징 아키텍처**
+OHLCV 값을 거친 이산 토큰(coarse-grained subtoken)과 세밀한 이산 토큰(fine-grained subtoken)으로 분리 인코딩한다. 연속값의 노이즈를 제거하면서 세부 패턴을 보존하는 방식이다.
+
+**② 확률 예측 지원**
+단일 포인트 예측이 아니라 여러 번 샘플링을 통해 신뢰 구간을 제공한다. 예측의 불확실성을 수치로 확인할 수 있어 리스크 관리에 직접 활용 가능하다.
+
+**③ 배치 병렬 예측 + 4개 모델 패밀리**
+mini(4.1M)부터 large(499M)까지 4개 크기로 제공된다. 컨텍스트 윈도우는 최대 2048 토큰이며, 여러 종목을 배치로 동시에 예측할 수 있다. Qlib 연동 파인튜닝 파이프라인도 공식 제공된다.
+
+---
+
+## 설치 및 사용 예시
+
+```bash
+git clone https://github.com/shiyu-coder/Kronos
+cd Kronos
+pip install -r requirements.txt
+```
+
+```python
+from kronos import KronosModel
+import pandas as pd
+
+# OHLCV 데이터 로드 (pandas DataFrame)
+df = pd.read_csv("btc_1h.csv")  # columns: open, high, low, close, volume
+
+model = KronosModel.from_pretrained("NeoQuasar/Kronos-base")
+
+# 다음 24시간 예측 (샘플 100회 → 신뢰구간)
+predictions = model.predict(df, horizon=24, num_samples=100)
+print(predictions.median())   # 중앙값 예측
+print(predictions.quantile([0.1, 0.9]))  # 80% 신뢰구간
+```
+
+HuggingFace에서 `NeoQuasar` 조직 아래 mini/small/base 모델을 직접 내려받을 수 있다. BTC/USDT 24시간 예측 라이브 데모도 공식 제공 중이다.
+
+---
+
+## 누구에게 유용한가
+
+- **퀀트 전략 개발자**: 기존 룰 기반 시그널의 보조 레이어로 활용. 두 시그널의 일치·불일치 자체가 강력한 필터가 된다.
+- **알고리즘 트레이더**: Qlib 연동 파이프라인으로 백테스트까지 원스톱으로 가능.
+- **개인 투자자**: mini 모델(4.1M)은 CPU에서도 추론 가능. HuggingFace Spaces에 띄워 REST API로 호출하면 서버 비용 없이 운용된다.
+- **AI 연구자**: 금융 도메인 파운데이션 모델의 사전훈련·파인튜닝 방법론 자체를 연구하는 데 적합한 베이스라인.
+
+---
+
+## 한계
+
+Vercel 서버리스 환경에서는 PyTorch 모델을 직접 실행할 수 없다. GPU 없이 large 모델을 돌리면 추론 시간이 수십 초에 달할 수 있다. K선 기반 예측이므로 온체인 데이터, 뉴스 센티먼트, 거시경제 지표 등 가격 외 요인은 반영되지 않는다. 또한 모델 자체는 "다음 캔들의 분포"를 예측하는 것이며, 절대적인 매매 신호를 보장하지 않는다.
+
+---
+
+## 정리
+
+Kronos는 "K선 읽기"를 GPT가 "텍스트 읽기"를 배운 것과 동일한 방식으로 학습시킨 최초의 오픈소스 시도다. RankIC 93% 향상, 변동성 예측 MAE 9% 개선이라는 벤치마크 수치와 AAAI 2026 채택이 이 주장을 뒷받침한다. 퀀트·트레이딩 AI 통합을 고려 중이라면 현재 가장 접근성 높은 출발점이다.
+
+원문: https://github.com/shiyu-coder/Kronos | arXiv: https://arxiv.org/abs/2408.05343
