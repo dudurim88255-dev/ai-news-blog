@@ -1,0 +1,54 @@
+name: AI Prediction Market Post
+
+on:
+  schedule:
+    # 매일 KST 14:00 = UTC 05:00 (auto-publish와 겹치지 않도록)
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prediction-post:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate prediction post
+        run: npx tsx scripts/run-prediction-post.ts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add content/
+          git diff --staged --quiet && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "auto: $(date +'%Y-%m-%d') AI 예측시장 브리핑"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Deploy to Vercel
+        if: steps.changes.outputs.changed == 'true'
+        run: npx vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: team_ruRodWfalxM5k4QldqQgNq7d
+          VERCEL_PROJECT_ID: prj_lfSGTNpLMun3dDkHrknQRezz6WzP
